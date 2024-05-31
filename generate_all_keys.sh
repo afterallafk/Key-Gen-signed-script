@@ -1,32 +1,15 @@
 #!/bin/bash
 
-# Ensure the script is being run from the root of the Android build tree
-if [[ ! -f "build/envsetup.sh" ]]; then
-    echo "Error: This script must be run from the root of the Android build tree."
-    exit 1
-fi
-
-# Source the environment
-. build/envsetup.sh
-
 # Prompt user for build type
 echo "Please select the build type:"
 echo "1. AOSP"
 echo "2. LineageOS (LOS)"
 read -p "Enter the build type (1 or 2): " build_type
 
-# Check build type and create directory accordingly
-if [[ $build_type == "1" ]]; then
+# Check directory accordingly
     mkdir -p vendor/extra
     destination_dir="vendor/extra"
-elif [[ $build_type == "2" ]]; then
-    mkdir -p vendor/lineage-priv
-    destination_dir="vendor/lineage-priv"
-else
-    echo "Invalid build type. Exiting."
-    exit 1
-fi
-
+    
 # Delete directory if it already exists
 rm -rf ~/.android-certs
 
@@ -59,22 +42,8 @@ mkdir -p "$destination_dir/keys"
 # Move the keys to the destination directory
 mv ~/.android-certs/* "$destination_dir/keys"
 
-# Create keys.mk
-echo "PRODUCT_DEFAULT_DEV_CERTIFICATE := $destination_dir/keys/releasekey" > "$destination_dir/keys/keys.mk"
-
-# Create BUILD.bazel for LineageOS
-if [[ $build_type == "2" ]]; then
-    cat <<EOF > "$destination_dir/keys/BUILD.bazel"
-filegroup(
-    name = "android_certificate_directory",
-    srcs = glob([
-        "*.pk8",
-        "*.pem",
-    ]),
-    visibility = ["//visibility:public"],
-)
-EOF
-fi
+# Create product.mk
+echo "PRODUCT_DEFAULT_DEV_CERTIFICATE := $destination_dir/keys/releasekey" > "$destination_dir/product.mk"
 
 # Ensure correct file permissions
 chmod -R 755 "$destination_dir/keys"
