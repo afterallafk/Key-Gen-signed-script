@@ -1,11 +1,5 @@
 #!/bin/bash
 
-# Prompt user for build type
-echo "Please select the build type:"
-echo "1. AOSP"
-echo "2. LineageOS (LOS)"
-read -p "Enter the build type (1 or 2): " build_type
-
 # Check directory accordingly
     mkdir -p vendor/extra
     destination_dir="vendor/extra"
