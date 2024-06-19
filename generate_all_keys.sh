@@ -26,7 +26,7 @@ mkdir -p ~/.android-certs
 # Generate keys
 mkdir ~/.android-certs
 
-for x in releasekey platform shared media networkstack testkey bluetooth sdk_sandbox verifiedboot; do \
+for x in releasekey platform shared media networkstack testkey cyngn-priv-app bluetooth sdk_sandbox verifiedboot nfc; do \
     ./development/tools/make_key ~/.android-certs/$x "$subject"; \
 done
 
@@ -43,4 +43,3 @@ echo "PRODUCT_DEFAULT_DEV_CERTIFICATE := $destination_dir/keys/releasekey" > "$d
 chmod -R 755 "$destination_dir/keys"
 
 echo "Key generation and setup completed successfully."
-
