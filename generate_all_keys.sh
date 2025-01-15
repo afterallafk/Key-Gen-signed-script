@@ -1,8 +1,8 @@
 #!/bin/bash
 
 # Check directory accordingly
-    mkdir -p vendor/extra
-    destination_dir="vendor/extra"
+    mkdir -p vendor/signing
+    destination_dir="vendor/signing"
     
 # Delete directory if it already exists
 rm -rf ~/.android-certs
